@@ -1,26 +1,36 @@
-# Simple Mine Sweeper
+# Mine Sweeper
 
-> A simple mine sweeper in console.
+> A simple mine sweeper in console with auto-playing .
 
 ## Requirements
 
 - python3
 - termcolor==1.1.0
 
+## Run
+
+```shell
+$ python play.py
+# Type `[rows] [cols] [mines] man / auto` to start a game.
+# e.g., `20 30 30 auto`
+# In manual mode, use `[operation] [row] [col]` to uncover / mask a cell.
+
+# In auto mode, sleep 0.05s each move so that you can see the precess clearly.
+```
+
 ## Screenshots
 
-### Start a game
+### Start a game(manual playing)
 
-![](screenshots/start.png)
+![](screenshots/man-start.png)
 
-### Win a game
+### Automatic playing game
 
-![](screenshots/win.png)
+![](screenshots/auto-winning.png)
 
-### Lose a  game
+### Losing game
 
-![](screenshots/lose.png)
+![](screenshots/losing.png)
 
 ## TODO
-
-- [ ] Auto-mining algorithm.
+- Advanced inference algorithm

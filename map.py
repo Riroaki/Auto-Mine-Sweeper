@@ -13,20 +13,20 @@ class Map(object):
 
     def uncover(self, row: int, col: int) -> int:
         if self.__flag:
-            self.__init_map(col, row)
+            self.__init_map(row, col)
             self.__flag = False
         return self.__data[row][col]
 
     def __init_map(self, row: int, col: int):
         # Initialize mines at first attempt to avoid collision
         for i in range(self.__total):
-            pos_x = random.randint(0, self.__cols - 1)
-            pos_y = random.randint(0, self.__rows - 1)
-            while (pos_x == col and pos_y == row) \
-                    or self.__data[pos_y][pos_x] != 0:
-                pos_x = random.randint(0, self.__cols - 1)
-                pos_y = random.randint(0, self.__rows - 1)
-            self.__data[pos_y][pos_x] = -1
+            pos_row = random.randint(0, self.__rows - 1)
+            pos_col = random.randint(0, self.__cols - 1)
+            while (pos_col == col and pos_row == row) \
+                    or self.__data[pos_row][pos_col] != 0:
+                pos_row = random.randint(0, self.__rows - 1)
+                pos_col = random.randint(0, self.__cols - 1)
+            self.__data[pos_row][pos_col] = -1
         # Initialize grids around mines
         for row in range(self.__rows):
             for col in range(self.__cols):
@@ -38,10 +38,6 @@ class Map(object):
                             if self.__data[ri][ci] == -1:
                                 self.__data[row][col] += 1
 
-    @property
-    def data(self) -> list:
-        return self.__data
-
-
-if __name__ == '__main__':
-    m = Map(10, 5, 15)
+    def __getitem__(self, index: int) -> list:
+        # Access data: [i][j]
+        return self.__data[index]
