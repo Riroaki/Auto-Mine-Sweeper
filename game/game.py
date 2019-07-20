@@ -1,7 +1,10 @@
+"""
+Mine-sweeper game class.
+"""
 import time
 from enum import Enum
 from termcolor import colored
-from map import Map
+from game.map import Map
 
 
 class STATUS(Enum):

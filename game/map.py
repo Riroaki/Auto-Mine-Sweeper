@@ -1,3 +1,6 @@
+"""
+Mine-sweeper map class.
+"""
 import random
 
 

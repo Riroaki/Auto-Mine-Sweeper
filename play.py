@@ -1,4 +1,5 @@
 import time
+import logging
 from termcolor import colored
 from game import MineGame, STATUS, OPERATION
 from auto import MineBot
@@ -14,6 +15,8 @@ HEADING = colored("""
 
 GAME = MineGame()
 BOT = MineBot()
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger('main')
 
 
 def play_manual() -> list:
@@ -27,7 +30,7 @@ def play_manual() -> list:
 
 
 def play_auto() -> list:
-    # Play a game by bot
+    # Play a game by auto
     move_list = BOT.analyze(GAME)
     return move_list
 
@@ -44,7 +47,7 @@ def main():
         try:
             command = input('Starting a new game...\n'
                             'Input rows, columns, mines and interact type:\n'
-                            '(`auto` == automatic play, `man` == manual play)\n'
+                            '(`auto` = automatic play, `man` = manual play)\n'
                             'e.g., `20 30 25 man`, `10 10 10 auto`\n'
                             'Press `ctrl + c` to quit.\n> ').strip().split()
             assert len(command) == 4
@@ -65,20 +68,20 @@ def main():
                         GAME.show()
                         # Game is over
                         if GAME.status != STATUS.RUNNING:
-                            print('Last move:', move)
+                            logger.info('Last move: {}'.format(move))
                             break
                     # Game is over
                     if GAME.status != STATUS.RUNNING:
                         break
                 except (IndexError, ValueError, AssertionError):
-                    print('Illegal move.')
+                    logger.warning('Illegal move.')
                 except KeyboardInterrupt:
-                    print('Quit this game...')
+                    logger.info('Quit this game...')
                     break
         except AssertionError:
-            print('Illegal paramaters. Input again.')
+            logger.warning('Illegal paramaters. Input again.')
         except KeyboardInterrupt:
-            print('Have a nice day:)')
+            logger.info('Have a nice day:)')
             break
 
 
