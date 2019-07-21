@@ -41,15 +41,28 @@
 ### Mixed Strategy
 
 - Basically, the auto mine-bot searches moves in this order(if no moves are generated,  go to next move):
-  -  `Naive -> advanced -> probabilistic / random -> (random)`.
+  -  `Naive -> advanced -> probabilistic -> random`.
 
 ## Test Results
 
-Test 40 * 40 shape board with mine rate being 0.050, 0.075, …,  0.950.
+Test 40 * 40 shape board with mine rate being 0.050, 0.075, …,  0.250.
 
 Test 1000 rounds of games for each mine rate.
 
-![](screenshots/test-console.png)
+![](../blog/source/_posts/Mine-Sweeper-Auto-Player/test.png)
+
+![](test.png)
+
+### Classical game
+
+Settings in windows version(from wikipedia):
+
+- Primary: 8 × 8, 10mines（[Windows 98](https://zh.wikipedia.org/wiki/Windows_98)or before）/9 × 9, 10mines（[Windows 2000](https://zh.wikipedia.org/wiki/Windows_2000)or later）
+
+- Medium: 16 × 16, 40mines
+- Advanced: 30 × 16, 99mines
+
+![](screenshots/classic.png)
 
 ## Run
 
@@ -73,5 +86,5 @@ $ python play.py
 
 ### Losing game
 
-![](screenshots/lose.png)
+![](screenshots/losing.png)
 

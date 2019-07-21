@@ -105,13 +105,7 @@ class MineGame(object):
         return 0
 
     def __end_game(self):
-        # Show prompt
-        if self.status == STATUS.LOSE:
-            # Uncover all grids
-            for row in range(self.rows):
-                for col in range(self.cols):
-                    self.__mask[row][col] = MASK.KNOWN
-        # Freeze time if game is over
+        # Freeze time when game is over
         self.__duration = time.time() - self.start_time
 
     @property

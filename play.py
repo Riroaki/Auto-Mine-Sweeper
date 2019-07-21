@@ -15,6 +15,7 @@ HEADING = colored("""
 
 GAME = MineGame()
 BOT = MineBot()
+INTERVAL = 0.10
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger('main')
 
@@ -58,21 +59,18 @@ def main():
             GAME.start(*params)
             GAME.show()
             # Continuously playing
-            while True:
+            while GAME.status == STATUS.RUNNING:
                 # Generate a sequence of operations
                 try:
                     move_list = play()
                     for move in move_list:
                         GAME.move(*move)
-                        time.sleep(0.05)
                         GAME.show()
+                        time.sleep(INTERVAL)
                         # Game is over
                         if GAME.status != STATUS.RUNNING:
                             logger.info('Last move: {}'.format(move))
                             break
-                    # Game is over
-                    if GAME.status != STATUS.RUNNING:
-                        break
                 except (IndexError, ValueError, AssertionError):
                     logger.warning('Illegal move.')
                 except KeyboardInterrupt:

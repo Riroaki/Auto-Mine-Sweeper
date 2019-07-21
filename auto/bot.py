@@ -19,8 +19,6 @@ class MineBot(object):
     remain: int
     remain_mines: int
     probability_dict: dict
-    # Threshold of mixing probabilistic or random algorithm
-    threshold: float = 0.5
 
     def see(self, game: MineGame) -> STATUS:
         # See details of game
@@ -44,23 +42,16 @@ class MineBot(object):
             moves = self.__advanced_infer()
             # Try probabilistic inference
             if len(moves) == 0:
-                bound = self.threshold * self.rows * self.cols
-                if self.remain > bound:
-                    moves = self.__probabilistic_infer()
-                    # Try random inference
-                    if len(moves) == 0:
-                        moves = self.__random_infer()
-                        logger.debug(
-                            'Random algorithm: inferred {} moves'.format(
-                                len(moves)))
-                    else:
-                        logger.debug(
-                            'Probabilistic algorithm: inferred {} moves'.format(
-                                len(moves)))
-                else:
+                moves = self.__probabilistic_infer()
+                # Try random inference
+                if len(moves) == 0:
                     moves = self.__random_infer()
                     logger.debug(
                         'Random algorithm: inferred {} moves'.format(
+                            len(moves)))
+                else:
+                    logger.debug(
+                        'Probabilistic algorithm: inferred {} moves'.format(
                             len(moves)))
             else:
                 logger.debug(
@@ -115,9 +106,9 @@ class MineBot(object):
             cells, all_solutions = find_solutions(group_keys, group_values)
             # Use a filter to remove impossible solutions:
             # total mines exceeds remains
+            low, high = 1, self.remain_mines - group_count + 1
             all_solutions = list(
-                filter(lambda sol: sum(sol) < self.remain_mines,
-                       all_solutions))
+                filter(lambda sol: low <= sum(sol) <= high, all_solutions))
             clean_cells, mine_cells = self.__find_common_infer(cells,
                                                                all_solutions)
             moves.update([(OPERATION.UNCOVER, r, c) for r, c in clean_cells])
@@ -203,13 +194,13 @@ class MineBot(object):
         # Generate random uncover moves based on probability calculated using
         # all solutions inferred in advanced_inferences
         moves = set()
-        max_prob, max_cell = 0, None
+        min_prob, min_cell = 0, None
         for cell, probability in self.probability_dict.items():
-            if probability > max_prob:
-                max_prob = probability
-                max_cell = cell
-        if max_cell is not None:
-            moves.add((OPERATION.UNCOVER, *max_cell))
+            if probability < min_prob:
+                min_prob = probability
+                min_cell = cell
+        if min_cell is not None:
+            moves.add((OPERATION.UNCOVER, *min_cell))
         return moves
 
     def __random_infer(self) -> set:

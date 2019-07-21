@@ -1,6 +1,10 @@
 """
 Find all feasible solutions for a group of constraints using backtracking.
+Set threshold of a locality to avoid too much computation...
 """
+
+# If number of cells exceeds it, we give up trying to find a solution...
+MAX_CELLS = 32
 
 
 def find_solutions(constraint_keys: list, constraint_values: list) -> tuple:
@@ -13,9 +17,10 @@ def find_solutions(constraint_keys: list, constraint_values: list) -> tuple:
     cells = list(cells)
     count = len(cells)
     is_mine = [False for _ in range(count)]
-    # Use backtracking to discover all feasible solutions
-    backtracking(all_solutions, constraint_keys, constraint_values, 0, cells,
-                 is_mine)
+    if count <= MAX_CELLS:
+        # Use backtracking to discover all feasible solutions
+        backtracking(all_solutions, constraint_keys, constraint_values, 0,
+                     cells, is_mine)
     return cells, all_solutions
 
 

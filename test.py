@@ -1,3 +1,6 @@
+"""
+Test codes for auto-playing.
+"""
 import tqdm
 import logging
 import matplotlib.pyplot as plt
@@ -6,15 +9,14 @@ from auto import MineBot
 
 BOT = MineBot()
 GAME = MineGame()
-SHAPE = (40, 40)
 logging.basicConfig(level=logging.INFO)
 
 
-def test(mine_rate: float, total: int) -> float:
+def test(shape: tuple, mines: int, total: int) -> float:
     win = 0
     progress_bar = tqdm.tqdm(total=total)
     for i in range(total):
-        GAME.start(*SHAPE, int(SHAPE[0] * SHAPE[1] * mine_rate))
+        GAME.start(*shape, mines)
         while GAME.status == STATUS.RUNNING:
             moves = BOT.analyze(GAME)
             for move in moves:
@@ -29,16 +31,34 @@ def test(mine_rate: float, total: int) -> float:
 
 def main():
     win_rates = []
-    # Test mine rate from 0.05 to 0.95
-    mine_rates = [0.025 * (i + 2) for i in range(37)]
-    for rate in mine_rates:
-        logging.info('Test mine rate: {}'.format(rate))
-        win_rates.append(test(rate, 1000))
-        logging.info('Mine rate: {}, win rate: {}'.format(rate, win_rates[-1]))
-    plt.plot(mine_rates, win_rates)
+    shape = (40, 40)
+    # Test mine dense from 0.05 to 0.25
+    mine_denses = [0.025 * (i + 2) for i in range(9)]
+    for dense in mine_denses:
+        mines = int(dense * shape[0] * shape[1])
+        logging.info('Test mine dense: {:.3f}'.format(dense))
+        win_rates.append(test(shape, mines, 1000))
+        logging.info(
+            'Mine dense: {:.3f}, win rate: {:.3f}'.format(dense,
+                                                          win_rates[-1]))
+    plt.plot(mine_denses, win_rates)
+    plt.savefig('test.png')
     plt.show()
     print('Win rates:', win_rates)
 
 
+def classic_test():
+    names = ['Primary', 'Medium', 'Advanced']
+    shapes = [(8, 8), (16, 16), (30, 16)]
+    mines = [10, 40, 99]
+    win_rates = []
+    for i in range(3):
+        logging.info('Test {}'.format(names[i]))
+        win_rates.append(test(shapes[i], mines[i], 1000))
+        logging.info(
+            'Mine count: {}, win rate: {}'.format(mines[i], win_rates[-1]))
+
+
 if __name__ == '__main__':
     main()
+    classic_test()
