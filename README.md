@@ -1,6 +1,8 @@
 # Mine Sweeper
 
 > A simple mine sweeper in console with auto-playing algorithm.
+>
+> https://riroaki.github.io/Mine-Sweeper-Auto-Player/
 
 ## Requirements
 
