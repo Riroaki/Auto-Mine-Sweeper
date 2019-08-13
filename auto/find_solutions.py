@@ -4,7 +4,7 @@ Set threshold of a locality to avoid too much computation...
 """
 
 # If number of cells exceeds it, we give up trying to find a solution...
-MAX_CELLS = 32
+MAX_CELLS = 48
 
 
 def find_solutions(constraint_keys: list, constraint_values: list) -> tuple:

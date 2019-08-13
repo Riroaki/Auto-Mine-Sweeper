@@ -28,6 +28,7 @@
 - Inference based on searching all feasible solutions.
   - Use Union-Find algorithm to distinctive group constraints.
   - Use backtracking algorithm to find all feasible solutions in all cell groups.
+    - For sake of efficiency, we won't try to find solutions for cells more than 40 (could be modified in `auto/find_solutions.py`).
   - Remove impossible solutions whose number of mines is larger than number of remain mines.
   - Find common inferences in all solutions for each cell group.
 
